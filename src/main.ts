@@ -1,11 +1,12 @@
 import './style.css'
 import { initCanvas, renderBoid } from './renderer';
 import { Boid, createBoids, getBandColor } from './boid';
+import { config } from './config';
 
 const { canvas, ctx } = initCanvas();
 
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
+    canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight;
 });
 
@@ -16,14 +17,17 @@ function render() {
 
   for (const boid of boids) {
       const color = getBandColor(boid.band);
-      renderBoid(ctx, boid.getX(), boid.getY(), color);
+      renderBoid(ctx, boid.position.x, boid.position.y, color);
   }
 }
 
-let boids: Boid[] = createBoids(100);
+let boids: Boid[] = createBoids(config.quantity);
 
 function animate() {
     render();
+    for (const boid of boids) {
+        boid.update(boids, canvas.width, canvas.height);
+    }
     requestAnimationFrame(animate);
 }
 

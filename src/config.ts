@@ -1,0 +1,16 @@
+export const config = {
+    quantity: 33,
+    maxSpeed: 2,
+    separationWeight: 2.5,
+    cohesionWeight: 1.0,
+    alignmentWeight: 1.0,
+    neighborhoodDistance: 100,
+    separationDistance: 20,
+    maxNeighbors: 10,
+    maxVelocity: 10,
+    minVelocity: 0,
+    maxAcceleration: 1,
+    minAcceleration: 0,
+    maxDeceleration: 1,
+    minDeceleration: 0,
+}
