@@ -1,24 +1,30 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { initCanvas, renderBoid } from './renderer';
+import { Boid, createBoids, getBandColor } from './boid';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const { canvas, ctx } = initCanvas();
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (const boid of boids) {
+      const color = getBandColor(boid.band);
+      renderBoid(ctx, boid.getX(), boid.getY(), color);
+  }
+}
+
+let boids: Boid[] = createBoids(100);
+
+function animate() {
+    render();
+    requestAnimationFrame(animate);
+}
+
+animate();
