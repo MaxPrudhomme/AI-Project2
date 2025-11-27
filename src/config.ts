@@ -1,4 +1,4 @@
-export const config = {
+export let config = {
     quantity: 33,
     maxSpeed: 2,
     separationWeight: 2.5,
