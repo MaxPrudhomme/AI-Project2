@@ -21,7 +21,10 @@ export class Boid {
         this.wanderSeed = Math.random() * Math.PI * 2;
     }
 
-    public distanceTo(other: Boid): number {
+    public distanceTo(other: Boid | Vector2): number {
+        if (other instanceof Vector2) {
+            return Math.sqrt((this.position.x - other.x) ** 2 + (this.position.y - other.y) ** 2);
+        }
         return Math.sqrt((this.position.x - other.position.x) ** 2 + (this.position.y - other.position.y) ** 2);
     }
 
@@ -137,17 +140,8 @@ export class Boid {
     }
 }
 
-export function getBandColor(band: Band): string {
-    switch (band) {
-        case 'low':
-            return '#d43c2a';
-        case 'mid':
-            return '#ffd23c';
-        case 'high':
-            return '#3c9fff';
-        default:
-            return '#ffffff';
-    }
+export function getBandColor(_band: Band): string {
+    return '#ffffff';
 }
 
 export function createBoids(num: number): Boid[] {

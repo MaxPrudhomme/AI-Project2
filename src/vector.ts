@@ -41,4 +41,8 @@ export class Vector2 {
     public clone(): Vector2 {
         return new Vector2(this.x, this.y);
     }
+
+    public distanceTo(other: Vector2): number {
+        return Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
+    }
 }
