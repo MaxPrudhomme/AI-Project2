@@ -1,5 +1,5 @@
 import './style.css'
-import { initCanvas, renderBoid } from './renderer';
+import { initCanvas, renderBoid, renderZones } from './renderer';
 import { Boid, createBoids, getBandColor } from './boid';
 import { config } from './config';
 import { Orchestra } from './orchestra';
@@ -16,10 +16,13 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-function render() {
+function render(isPlaying: boolean) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw zone indicators when music is playing
+  renderZones(ctx, canvas.width, canvas.height, isPlaying);
 
   for (const boid of boids) {
       const color = getBandColor(boid.band);
@@ -28,13 +31,14 @@ function render() {
 }
 
 function animate() {
-    render();
+    const isPlaying = orchestra.isPlaying();
+    render(isPlaying);
     
     // Process audio and get frequency data
-    const frequencyData = orchestra.isPlaying() ? orchestra.processAudio() : null;
+    const frequencyData = isPlaying ? orchestra.processAudio() : null;
     
-    // Update orchestrator with frequency data (zone-based separation)
-    orchestrator.update(boids, frequencyData);
+    // Update orchestrator with frequency data (zone-based separation and attraction)
+    orchestrator.update(boids, frequencyData, canvas.width, canvas.height);
     
     // Update all boids
     for (const boid of boids) {

@@ -123,27 +123,16 @@ export class Boid {
 
         this.position.add(this.velocity);
 
-        let wrapped = false;
+        // Wrap at all edges
         if (this.position.x < 0) {
             this.position.x = canvasWidth;
-            wrapped = true;
         } else if (this.position.x > canvasWidth) {
             this.position.x = 0;
-            wrapped = true;
         }
         if (this.position.y < 0) {
             this.position.y = canvasHeight;
-            wrapped = true;
         } else if (this.position.y > canvasHeight) {
             this.position.y = 0;
-            wrapped = true;
-        }
-
-        if (wrapped) {
-            this.velocity.add(new Vector2(
-                (Math.random() - 0.5) * 0.5,
-                (Math.random() - 0.5) * 0.5
-            ));
         }
     }
 }
@@ -162,9 +151,10 @@ export function getBandColor(band: Band): string {
 }
 
 export function createBoids(num: number): Boid[] {
-    let boids: Boid[] = [];
+    const boids: Boid[] = [];
 
     for (let i = 0; i < num; i++) {
+        // Spawn boids randomly across the screen
         boids.push(new Boid(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 'low'));
         boids.push(new Boid(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 'mid'));
         boids.push(new Boid(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 'high'));
